@@ -19,6 +19,7 @@ INSERT INTO SCVNTSECUENCIAS(NOMBRESECUENCIA,VALORSECUENCIA) VALUES('SCVNSECVEHIC
 INSERT INTO SCVNTSECUENCIAS(NOMBRESECUENCIA,VALORSECUENCIA) VALUES('SCVNSECVEHICULOCHOFER', 1);
 INSERT INTO SCVNTSECUENCIAS(NOMBRESECUENCIA,VALORSECUENCIA) VALUES('SCVNSECGUIADESPACHO', 1);
 INSERT INTO SCVNTSECUENCIAS(NOMBRESECUENCIA,VALORSECUENCIA) VALUES('SCVNSECGUIADESPACHOPEDIDO', 1);
+INSERT INTO SCVNTSECUENCIAS(NOMBRESECUENCIA,VALORSECUENCIA) VALUES('SCVNSECGUIADESPACHOFACTURA', 1); 
 INSERT INTO SCVNTSECUENCIAS(NOMBRESECUENCIA,VALORSECUENCIA) VALUES('SCVNSECGUIADESPACHOEXTRAS', 1);
 INSERT INTO SCVNTSECUENCIAS(NOMBRESECUENCIA,VALORSECUENCIA) VALUES('SCVNSECFACTURACABECERA', 1);
 INSERT INTO SCVNTSECUENCIAS(NOMBRESECUENCIA,VALORSECUENCIA) VALUES('SCVNSECFACTURADETALLE', 1);
@@ -81,7 +82,8 @@ INSERT INTO SCVNTCATALOGOVALOR(CODIGOCATALOGOVALOR,CODIGOCATALOGOTIPO, NOMBRECAT
 INSERT INTO SCVNTCATALOGOVALOR(CODIGOCATALOGOVALOR,CODIGOCATALOGOTIPO, NOMBRECATALOGOVALOR, ESTADO) VALUES('SAC', 10, 'SACO', '1');
 INSERT INTO SCVNTCATALOGOVALOR(CODIGOCATALOGOVALOR,CODIGOCATALOGOTIPO, NOMBRECATALOGOVALOR, ESTADO) VALUES('MAY', 11, 'MAYORISTA', '1');
 INSERT INTO SCVNTCATALOGOVALOR(CODIGOCATALOGOVALOR,CODIGOCATALOGOTIPO, NOMBRECATALOGOVALOR, ESTADO) VALUES('MIN', 11, 'MINORISTA', '1');
-
+INSERT INTO SCVNTCATALOGOVALOR(CODIGOCATALOGOVALOR,CODIGOCATALOGOTIPO, NOMBRECATALOGOVALOR, ESTADO) VALUES('FRE', 12, 'REGISTRADA', '1');
+INSERT INTO SCVNTCATALOGOVALOR(CODIGOCATALOGOVALOR,CODIGOCATALOGOTIPO, NOMBRECATALOGOVALOR, ESTADO) VALUES('FDS', 12, 'DESPACHADA', '1');
 CREATE TABLE SCVNTCOMPANIA(
 	CODIGOCOMPANIA INTEGER NOT NULL,
 	NOMBRECOMPANIA VARCHAR(64) NOT NULL,
@@ -460,7 +462,10 @@ CREATE TABLE SCVNTFACTURACABECERA(
 	TOTALCUENTA DECIMAL(12 , 4),
 	CODIGOVALORTIPODOCUMENTO VARCHAR(3) NOT NULL,
 	CODIGOTIPODOCUMENTO INTEGER NOT NULL,
-	ESTADO VARCHAR(1) NOT NULL,	
+	ESTADO VARCHAR(1) NOT NULL,
+	TIPOCLIENTE VARCHAR(3),	
+	CODIGOVALORESTADO VARCHAR(3),
+	CODIGOTIPOESTADO INTEGER,
 	USUARIOREGISTRO VARCHAR(32) NOT NULL,
 	FECHAREGISTRO TIMESTAMP NOT NULL,
 	USUARIOMODIFICACION VARCHAR(32),
@@ -626,6 +631,26 @@ ALTER TABLE SCVNTGUIADESPACHOPEDIDO ADD CONSTRAINT CODUSRFKSCVNTGUIADESPACHOPEDI
 ALTER TABLE SCVNTGUIADESPACHOPEDIDO ADD CONSTRAINT CODPEDFKSCVNTGUIADESPACHOPEDIDOPKGUIADESP FOREIGN KEY(CODIGOCOMPANIA, CODIGOGUIADESPACHO) REFERENCES SCVNTGUIADESPACHO;
 ALTER TABLE SCVNTGUIADESPACHOPEDIDO ADD CONSTRAINT CODPEDFKSCVNTGUIADESPACHOPEDIDOPKPEDIDO FOREIGN KEY(CODIGOCOMPANIA, CODIGOPEDIDO) REFERENCES SCVNTPEDIDO;
 
+CREATE TABLE SCVNTGUIADESPACHOFACTURA(
+	CODIGOCOMPANIA INTEGER NOT NULL,
+	CODIGOGUIADESPACHOFACTURA DECIMAL(12 , 0) NOT NULL,
+	CODIGOGUIADESPACHO DECIMAL(12 , 0) NOT NULL,
+	CODIGOFACTURA DECIMAL(12 , 0) NOT NULL,
+	ORDEN INTEGER NOT NULL,
+	OBSERVACION VARCHAR(64),
+	ESTADO VARCHAR(1) NOT NULL,	
+	USUARIOREGISTRO VARCHAR(32) NOT NULL,
+	FECHAREGISTRO TIMESTAMP NOT NULL,
+	USUARIOMODIFICACION VARCHAR(32),
+	FECHAMODIFICACION TIMESTAMP,
+	PRIMARY KEY(CODIGOCOMPANIA, CODIGOGUIADESPACHOFACTURA)	
+);
+ALTER TABLE SCVNTGUIADESPACHOFACTURA ADD CONSTRAINT CODCOMFKSCVNTGUIADESPACHOFACTURAPKCOMPANIA FOREIGN KEY(CODIGOCOMPANIA) REFERENCES SCVNTCOMPANIA;
+ALTER TABLE SCVNTGUIADESPACHOFACTURA ADD CONSTRAINT CODUSRFKSCVNTGUIADESPACHOFACTURAPKUSUARIOREG FOREIGN KEY(USUARIOREGISTRO) REFERENCES SCVNTUSUARIO(USERID);
+ALTER TABLE SCVNTGUIADESPACHOFACTURA ADD CONSTRAINT CODUSRFKSCVNTGUIADESPACHOFACTURAPKUSUARIOMOD FOREIGN KEY(USUARIOMODIFICACION) REFERENCES SCVNTUSUARIO(USERID);
+ALTER TABLE SCVNTGUIADESPACHOFACTURA ADD CONSTRAINT CODPEDFKSCVNTGUIADESPACHOFACTURAPKGUIADESP FOREIGN KEY(CODIGOCOMPANIA, CODIGOGUIADESPACHO) REFERENCES SCVNTGUIADESPACHO;
+ALTER TABLE SCVNTGUIADESPACHOFACTURA ADD CONSTRAINT CODPEDFKSCVNTGUIADESPACHOFACTURAPKFACTURA FOREIGN KEY(CODIGOCOMPANIA, CODIGOFACTURA) REFERENCES SCVNTFACTURACABECERA;
+
 CREATE TABLE SCVNTGUIADESPACHOEXTRAS(
 	CODIGOCOMPANIA INTEGER NOT NULL,
 	CODIGOGUIADESPACHOEXTRA DECIMAL(12 , 0) NOT NULL,
@@ -760,82 +785,33 @@ ALTER TABLE SCVNTVENDEDOR ADD CONSTRAINT CODUSRFKSCVNTVENDEDORPKUSUARIOMOD FOREI
 ALTER TABLE SCVNTVENDEDOR ADD CONSTRAINT CODPERFKSCVNTVENDEDORPKPERSONA FOREIGN KEY(CODIGOCOMPANIA, CODIGOPERSONA) REFERENCES SCVNTPERSONA;
 
 -----------------------SCRIPTS ADICIONALES------------------------
-ALTER TABLE SCVNTARTICULO ADD COLUMN PRECIOMINORISTA DECIMAL(12,4);
-
 ALTER TABLE SCVNTARTICULO ADD COLUMN PORCENTAJECOMISIONMAYOR DECIMAL(12,4);
 ALTER ALTER SCVNTARTICULO ADD COLUMN IMAGEN BYTEA;
-ALTER TABLE SCVNTFACTURACABECERA ADD COLUMN TIPOCLIENTE varchar(3);
+ALTER TABLE SCVNTFACTURACABECERA ADD COLUMN TIPOCLIENTE VARCHAR(3);
+ALTER TABLE SCVNTFACTURACABECERA ADD COLUMN CODIGOVALORESTADO VARCHAR(3);
+ALTER TABLE SCVNTFACTURACABECERA ADD COLUMN CODIGOTIPOESTADO INTEGER;
 
-ALTER TABLE SCVNTCLIENTE ADD COLUMN CODIGOVALORTIPOCOMPRA VARCHAR(3);
-ALTER TABLE SCVNTCLIENTE ADD COLUMN CODIGOTIPOCOMPRA INTEGER;
-ALTER TABLE SCVNTPEDIDO ADD COLUMN CODIGOREFERENCIA DECIMAL(12 , 0);	
-INSERT INTO SCVNTCATALOGOVALOR(CODIGOCATALOGOVALOR,CODIGOCATALOGOTIPO, NOMBRECATALOGOVALOR, ESTADO) VALUES('MAY', 11, 'MAYORISTA', '1');
-INSERT INTO SCVNTCATALOGOVALOR(CODIGOCATALOGOVALOR,CODIGOCATALOGOTIPO, NOMBRECATALOGOVALOR, ESTADO) VALUES('MIN', 11, 'MINORISTA', '1');
-
------------------------------------
---- Actualizar detalle unidad por defecto
------------------------------------
-update scvntfacturadetalle set codigoarticulounidadmanejo = (
-select codigoarticulounidadmanejo from scvntarticulounidadmanejo
-where scvntfacturadetalle.codigoarticulo = codigoarticulo and espordefecto = true 
-) where codigoarticulounidadmanejo is null and estado = '1';
+INSERT INTO SCVNTSECUENCIAS(NOMBRESECUENCIA,VALORSECUENCIA) VALUES('SCVNSECGUIADESPACHOFACTURA', 1);
+INSERT INTO SCVNTCATALOGOVALOR(CODIGOCATALOGOVALOR,CODIGOCATALOGOTIPO, NOMBRECATALOGOVALOR, ESTADO) VALUES('FRE', 12, 'REGISTRADA', '1');
+INSERT INTO SCVNTCATALOGOVALOR(CODIGOCATALOGOVALOR,CODIGOCATALOGOTIPO, NOMBRECATALOGOVALOR, ESTADO) VALUES('FDS', 12, 'DESPACHADA', '1');
 
 
-update scvntinvetario set codigoarticulounidadmanejo = (
-select codigoarticulounidadmanejo from scvntarticulounidadmanejo
-where scvntinvetario.codigoarticulo = codigoarticulo and espordefecto = true 
-) where codigoarticulounidadmanejo is null and estado = '1';
-
-update scvntdetallepedido set codigoarticulounidadmanejo = (
-select codigoarticulounidadmanejo from scvntarticulounidadmanejo
-where scvntdetallepedido.codigoarticulo = codigoarticulo and espordefecto = true 
-) where codigoarticulounidadmanejo is null and estado = '1';
-
-update scvntguiadespachodetalle set codigoarticulounidadmanejo = (
-select codigoarticulounidadmanejo from scvntarticulounidadmanejo
-where scvntguiadespachodetalle.codigoarticulo = codigoarticulo and espordefecto = true 
-) where codigoarticulounidadmanejo is null and estado = '1';
-
-update scvntguiadespachoextras set codigoarticulounidadmanejo = (
-select codigoarticulounidadmanejo from scvntarticulounidadmanejo
-where scvntguiadespachoextras.codigoarticulo = codigoarticulo and espordefecto = true 
-) where codigoarticulounidadmanejo is null and estado = '1';
-update scvntinvetario set valortotalexistencia = (cantidadexistencia * valorunidadexistencia );
------------------------------------
-
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 5, 2, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 6, 3, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 7, 4, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 8, 5, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 9, 6, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 10, 7, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 11, 8, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 12, 9, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 13, 10, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 14, 11, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 15, 12, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 16, 13, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 17, 14, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 18, 15, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 19, 16, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 20, 17, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 21, 18, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
-insert into scvntarticulounidadmanejo (codigocompania, codigoarticulounidadmanejo, codigoarticulo, valorunidadmanejo, codigovalorunidadmanejo, codigotipounidadmanejo, espordefecto, estado, usuarioregistro, fecharegistro)
-values(1, 22, 19, 1, 'UNI', 10, true, 1, 'USR1', CURRENT_TIMESTAMP);
+CREATE TABLE SCVNTGUIADESPACHOFACTURA(
+	CODIGOCOMPANIA INTEGER NOT NULL,
+	CODIGOGUIADESPACHOFACTURA DECIMAL(12 , 0) NOT NULL,
+	CODIGOGUIADESPACHO DECIMAL(12 , 0) NOT NULL,
+	CODIGOFACTURA DECIMAL(12 , 0) NOT NULL,
+	ORDEN INTEGER NOT NULL,
+	OBSERVACION VARCHAR(64),
+	ESTADO VARCHAR(1) NOT NULL,	
+	USUARIOREGISTRO VARCHAR(32) NOT NULL,
+	FECHAREGISTRO TIMESTAMP NOT NULL,
+	USUARIOMODIFICACION VARCHAR(32),
+	FECHAMODIFICACION TIMESTAMP,
+	PRIMARY KEY(CODIGOCOMPANIA, CODIGOGUIADESPACHOFACTURA)	
+);
+ALTER TABLE SCVNTGUIADESPACHOFACTURA ADD CONSTRAINT CODCOMFKSCVNTGUIADESPACHOFACTURAPKCOMPANIA FOREIGN KEY(CODIGOCOMPANIA) REFERENCES SCVNTCOMPANIA;
+ALTER TABLE SCVNTGUIADESPACHOFACTURA ADD CONSTRAINT CODUSRFKSCVNTGUIADESPACHOFACTURAPKUSUARIOREG FOREIGN KEY(USUARIOREGISTRO) REFERENCES SCVNTUSUARIO(USERID);
+ALTER TABLE SCVNTGUIADESPACHOFACTURA ADD CONSTRAINT CODUSRFKSCVNTGUIADESPACHOFACTURAPKUSUARIOMOD FOREIGN KEY(USUARIOMODIFICACION) REFERENCES SCVNTUSUARIO(USERID);
+ALTER TABLE SCVNTGUIADESPACHOFACTURA ADD CONSTRAINT CODPEDFKSCVNTGUIADESPACHOFACTURAPKGUIADESP FOREIGN KEY(CODIGOCOMPANIA, CODIGOGUIADESPACHO) REFERENCES SCVNTGUIADESPACHO;
+ALTER TABLE SCVNTGUIADESPACHOFACTURA ADD CONSTRAINT CODPEDFKSCVNTGUIADESPACHOFACTURAPKFACTURA FOREIGN KEY(CODIGOCOMPANIA, CODIGOFACTURA) REFERENCES SCVNTFACTURACABECERA;
