@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_92"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/jaxrs-api-3.0.10.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/cdi-api-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/MITyCLibAPI-1.1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/MITyCLibCert-1.1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/MITyCLibCrypt-1.1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/MITyCLibOCSP-1.1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/MITyCLibPolicy-1.1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/MITyCLibTrust-1.1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/MITyCLibTSA-1.1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/MITyCLibXADES-1.1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/bcprov-jdk16-1.45.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/validation-api-1.1.0.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/erp-cliente.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Esteban/Documents/Librerias/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
