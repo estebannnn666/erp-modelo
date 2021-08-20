@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_92"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/hibernate-validator-4.2.0.Final.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/hibernate-core-3.6.1.Final.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/commons-logging-1.1.3.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/spring-tx-3.2.15.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/spring-orm-3.2.15.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/spring-jdbc-3.2.15.RELEASE.jar" sourcepath="E:/SmxLibrerias/Librerias/spring-jdbc-3.2.15.RELEASE-sources.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/spring-expression-3.2.15.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/spring-core-3.2.15.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/spring-context-support-3.2.15.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/spring-context-3.2.15.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/spring-beans-3.2.15.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/spring-aspects-3.2.15.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/spring-aop-3.2.15.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/aopalliance-1.0.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/aspectjweaver-1.7.4.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/aspectjtools-1.7.4.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/aspectjrt-1.7.0.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/postgresql-42.1.1.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/dom4j-1.6.1-hudson-3.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/slf4j-log4j12-1.7.7.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/slf4j-api-1.7.7.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/javassist-3.18.2-GA.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/commons-lang3-3.1.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/jdom-1.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/erp-cliente"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/erp-firebase"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/erp-utilitario"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/jsoup-1.13.1.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/flying-saucer-core-9.1.20.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/flying-saucer-pdf-openpdf-9.1.20.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/juniversalchardet-2.3.0.jar"/>
+	<classpathentry kind="lib" path="E:/SmxLibrerias/Librerias/openpdf-1.3.11.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/erp-sri"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
